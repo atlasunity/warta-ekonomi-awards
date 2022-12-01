@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <title>Warta Ekonomi Awards</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.png" />
+    <link rel="stylesheet" href="TemplateData/style.css" />
+  </head>
+  <body class="light">
+    <div id="unity-container" class="unity-desktop">
+      <canvas id="unity-canvas"></canvas>
+    </div>
+    <div id="loading-cover" style="display: none">
+      <div id="unity-loading-bar">
+        <div id="unity-logo"><img src="TemplateData/logo-200kb.png" /></div>
+        <div id="text-introduction">
+          <p id="text-title">SELAMAT DATANG</p>
+          <p id="text-description">Digital Finance Awards 2022 Virtual</p>
+        </div>
+        <div id="unity-progress-value">
+          <p id="progress-text"></p>
+        </div>
+        <!-- <div id="unity-progress-bar-empty" style="display: none">
+          <div id="unity-progress-bar-full"></div>
+        </div> -->
+        <div class="spinner"></div>
+      </div>
+    </div>
+    <!-- <div id="btn-close" onclick=""></div> -->
+    <!-- <div id="unity-fullscreen-button" style="display: none"></div> -->
+    <script>
+            const hideFullScreenButton = "";
+            const buildUrl = "Build";
+            const loaderUrl = buildUrl + "/[WebGL] Warta Ekonomi Logo 200kb.loader.js";
+            const config = {
+              dataUrl: buildUrl + "/[WebGL] Warta Ekonomi Logo 200kb.data",
+              frameworkUrl: buildUrl + "/[WebGL] Warta Ekonomi Logo 200kb.framework.js",
+              codeUrl: buildUrl + "/[WebGL] Warta Ekonomi Logo 200kb.wasm",
+              streamingAssetsUrl: "StreamingAssets",
+              companyName: "Atlas Group",
+              productName: "Warta Ekonomi Awards",
+              productVersion: "0.1",
+            };
+
+            const container = document.querySelector("#unity-container");
+            const canvas = document.querySelector("#unity-canvas");
+            const loadingCover = document.querySelector("#loading-cover");
+            // const progressBarEmpty = document.querySelector("#unity-progress-bar-empty");
+            // const progressBarFull = document.querySelector("#unity-progress-bar-full");
+            let progressValueText = document.querySelector("#progress-text");
+            // const fullscreenButton = document.querySelector("#unity-fullscreen-button");
+            const spinner = document.querySelector('.spinner');
+
+            const canFullscreen = (function() {
+              for (const key of [
+                  'exitFullscreen',
+                  'webkitExitFullscreen',
+                  'webkitCancelFullScreen',
+                  'mozCancelFullScreen',
+                  'msExitFullscreen',
+                ]) {
+                if (key in document) {
+                  return true;
+                }
+              }
+              return false;
+            }());
+
+            if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+              container.className = "unity-mobile";
+              config.devicePixelRatio = 1;
+            }
+            loadingCover.style.display = "";
+
+            const script = document.createElement("script");
+            script.src = loaderUrl;
+            script.onload = () => {
+              createUnityInstance(canvas, config, (progress) => {
+                let progressValue = `${Math.floor(100 * progress)}%`;
+                progressValueText.textContent = progressValue;
+                spinner.style.display = "none";
+                // progressBarEmpty.style.display = "";
+                // progressBarFull.style.width = `${100 * progress}%`;
+              }).then((unityInstance) => {
+                loadingCover.style.display = "none";
+                // if (canFullscreen) {
+                //   if (!hideFullScreenButton) {
+                //     fullscreenButton.style.display = "";
+                //   }
+                //   fullscreenButton.onclick = () => {
+                //     window.vuplex.SetFullscreen(1)/*https://support.vuplex.com/articles/webgl-fullscreen*/;
+                //   };
+                // }
+              }).catch((message) => {
+                alert(message);
+              });
+            };
+            document.body.appendChild(script);
+    </script>
+    <script>
+      var unityInstance = UnityLoader.instantiate(
+        "unity-container",
+        "%UNITY_WEBGL_BUILD_URL%",
+        { onProgress: customProgress }
+      );
+    </script>
+    <script></script>
+  </body>
+</html>
